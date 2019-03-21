@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"
+	name="viewport" />
+<head th:include="/front/public/public_css::pub_css"></head>
+</head>
+<body>
+
+	<!--导航-->
+	<div th:replace="/front/public/public::menu"></div>
+	<!--导航-->
+	<!-- banner -->
+	<div class="swiper-container about_banner">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide"
+				style="background-image: url(assets/img/news_banner.png)"></div>
+		</div>
+	</div>
+	<!-- main -->
+	<div class="news_details">
+		<div class="container">
+			<div class="title">
+				<h4 class="tc">国际消费者权益日即3.15，大众“途锐”被举报发动机进水严重质量问题</h4>
+				<div class="tc">
+					<span><i class="icon iconfont">&#xecf4;</i> 2016-10-22</span> <span><i
+						class="icon iconfont">&#xec84;</i> 26</span>
+				</div>
+			</div>
+			<div class="text_box">
+				<p>
+					3月15日（周四），一年一度的央视“3·15”晚会在央视财经频道（央视2套）播出，看看今年又有哪些企业被点名了吧！第一弹：大众途锐被曝光发动机进水问题方向盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”近年来，一些“大众途锐”车主向4S店反映，发动机突然失灵。</p>
+				<p>4S店维修人员经过检查，发现车辆熄火的原因，与发动机进水有关。一位女车主回忆，出事前一天她的车只是在外面淋了一夜雨，难道和这有关系吗？盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”方向盘也打不动，刹车也刹不住，那真的是听天由命…”4S店维修人员经过检查，发现车辆熄火的原因，与发动机进水有关。一位女车主回忆，出事前一天她的车只是在外面淋了一夜雨，难道和这有关系吗？</p>
+				<img class="img-responsive" src="assets/img/news_details.png" alt="">
+				<p>
+					为了找到原因，这位女车主决定做一个试验，她把水从车前部浇下去，让她没有想到的是，水沿着引擎盖和右前大灯的缝隙流进了发动机的进气口。这位女车主认为，途锐汽车进气口位置的设计是导致发动机进水的重要原因，她决定再去找4S店讨个说法。</p>
+				<p>在央视的报道中，4S店不再强调发动机损坏是女车主涉水导致，但表示出现这样的问题只是小概率事件。</p>
+			</div>
+			<div class="tc article_btn">
+				<div class="pull-left">
+					<a href="#">上一篇：国际消费者权益日即3.15，大众“途锐”被举报发动机进水严重质量问题</a>
+				</div>
+				<div class="pull-right">
+					<a href="#">上一篇：国际消费者权益日即3.15，大众“途锐”被举报发动机进水严重质量问题</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 底部 -->
+	<div th:replace="/front/public/public::footer"></div>
+	<!-- 底部js -->
+	<div th:replace="/front/public/public_js::pub_js"></div>
+
+
+</body>
+</html>
