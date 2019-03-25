@@ -1,9 +1,11 @@
 package zhongchiedu.controller.backstage;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import zhongchiedu.common.utils.BasicDataResult;
 import zhongchiedu.common.utils.Common;
-import zhongchiedu.common.utils.Contents;
 import zhongchiedu.framework.pagination.Pagination;
-import zhongchiedu.general.pojo.User;
 import zhongchiedu.general.service.Impl.MultiMediaServiceImpl;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.website.pojo.News;
-import zhongchiedu.website.service.impl.NewsServiceImpl;
+import zhongchiedu.website.service.NewsService;
 
 /**
  * 新闻
@@ -46,7 +46,7 @@ public class NewsController {
 	private static final Logger log = LoggerFactory.getLogger(NewsController.class);
 
 	@Autowired
-	private NewsServiceImpl newsService;
+	private NewsService newsService;
 
 	@Autowired
 	private MultiMediaServiceImpl multiMediaService;
@@ -58,7 +58,7 @@ public class NewsController {
 	private String dir;
 
 	@GetMapping("/findnews")
-	// @RequiresPermissions(value = "findnews:list")
+	@RequiresPermissions(value = "news:list")
 	@SystemControllerLog(description = "查询所有新闻资源")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
@@ -90,27 +90,27 @@ public class NewsController {
 	}
 
 	@PostMapping("/news")
-	@RequiresPermissions(value = "news:add")
+//	@RequiresPermissions(value = "news:add")
 	@SystemControllerLog(description = "添加新闻")
 	public String addResource(@ModelAttribute("news") News news, HttpSession session,
 			@RequestParam("filenews") MultipartFile[] filenews,String editorValue,
 			@RequestParam(defaultValue = "", value = "oldnewsImg") String oldnewsImg) {
 
-		this.newsService.saveOrUpdateNews(news, session, filenews, oldnewsImg, imgPath, dir);
+		this.newsService.saveOrUpdateNews(news, session, filenews, oldnewsImg, imgPath, dir,editorValue);
 
 		return "redirect:findnews";
 	}
 
 	@PutMapping("/news")
-	@RequiresPermissions(value = "news:edit")
+//	@RequiresPermissions(value = "news:edit")
 	@SystemControllerLog(description = "修改新闻")
-	public String editResource(@ModelAttribute("news") News news, @RequestParam("filenews") MultipartFile[] filenews,
+	public String editResource(@ModelAttribute("news") News news, @RequestParam("filenews") MultipartFile[] filenews,String editorValue,
 			@RequestParam(defaultValue = "", value = "oldnewsImg") String oldnewsImg, HttpSession session) {
 
 		if (Common.isEmpty(news.getId())) {
 			news.setId(null);
 		}
-		this.newsService.saveOrUpdateNews(news, session, filenews, oldnewsImg, imgPath,dir);
+		this.newsService.saveOrUpdateNews(news, session, filenews, oldnewsImg, imgPath,dir,editorValue);
 
 		return "redirect:findnews";
 	}
@@ -141,12 +141,18 @@ public class NewsController {
 
 	@DeleteMapping("/news/{id}")
 	public String todelete(@PathVariable String id) {
+		
+		List ids = Arrays.asList(id.split(","));
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").in(ids));
+		this.newsService.remove(News.class, query);
+	/*	
 		if (Common.isNotEmpty(id)) {
 			News news = this.newsService.findOneById(id, News.class);
 			if (Common.isNotEmpty(news)) {
-				this.newsService.remove(news);
+				this..remove(news);
 			}
-		}
+		}*/
 		return "redirect:/findnews";
 	}
 

@@ -136,10 +136,10 @@
 	<!-- 我们是设计师、工程师、梦想缔造者 也是您的互联网服务保障 -->
 	<div class="waist_line">
 		<h2 class="tc wow fadeInDown">
-			我们是设计师、工程师、梦想缔造者 </br>也是您的互联网服务保障
+			为学校提供优质服务，客户的需求至上</br>提供一站式服务，为您保驾护航
 		</h2>
 		<div align="center" class="tc index_button wow fadeInUp">
-			<a class="btn">了解更多</a> <a class="btn">咨询我们</a>
+			<a class="btn">了解更多</a> <a class="btn">联系我们</a>
 		</div>
 	</div>
 	<!-- 我们的服务品质 -->
@@ -268,69 +268,29 @@
 		<div class="container">
 			<div class="index_titlebox">
 				<h3 class="index_title">新闻中心</h3>
-				<p class="index_intro">每天都发生着不同的事，我们将为未来更加的努力！</p>
+				<p class="index_intro">实时关注我们的动态，每天都有新发现！</p>
 			</div>
 			<div class="box">
-				<div class="col-sm-6  wow fadeInUp">
-					<a href="#">
+
+				<div class="col-sm-6  wow fadeInUp" th:each="news:${listnews}">
+					<a  href="javascript:;" th:onclick="|return newsDetails('${news.id}')|">
 						<div class="media">
 							<div class="media-left">
-								<p href="#">
-									<span class="month">二月</span></br> <span class="day">23</span>
+								<p >
+									<span class="month"
+										th:text="|${#dates.format(news.createTime,'M')}月|"></span></br> <span
+										class="day" th:text="${#dates.format(news.createTime,'dd')}"></span>
 								</p>
 							</div>
 							<div class="media-body">
-								<h4 class="media-heading">想在北京网站开发是真实的吗？</h4>
-								<p>在进行北京网站开发过程当中不仅要使得整个网站以及界面的功能实现能力强，相关使用者操作起来也需要便利。除此之外，美化网页的视....</p>
+								<h4 class="media-heading" th:text="${news.title}"></h4>
+								<p th:text="|${#strings.substring(news.description, 0, 60)}...|"></p>
 							</div>
 						</div>
 					</a>
 				</div>
-				<div class="col-sm-6  wow fadeInUp">
-					<a href="#">
-						<div class="media">
-							<div class="media-left">
-								<p href="#">
-									<span class="month">二月</span></br> <span class="day">23</span>
-								</p>
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">想在北京网站开发是真实的吗？</h4>
-								<p>在进行北京网站开发过程当中不仅要使得整个网站以及界面的功能实现能力强，相关使用者操作起来也需要便利。除此之外，美化网页的视....</p>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-sm-6  wow fadeInUp">
-					<a href="#">
-						<div class="media">
-							<div class="media-left">
-								<p href="#">
-									<span class="month">二月</span></br> <span class="day">23</span>
-								</p>
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">想在北京网站开发是真实的吗？</h4>
-								<p>在进行北京网站开发过程当中不仅要使得整个网站以及界面的功能实现能力强，相关使用者操作起来也需要便利。除此之外，美化网页的视....</p>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-sm-6  wow fadeInUp">
-					<a href="#">
-						<div class="media">
-							<div class="media-left">
-								<p href="#">
-									<span class="month">二月</span></br> <span class="day">23</span>
-								</p>
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading">想在北京网站开发是真实的吗？</h4>
-								<p>在进行北京网站开发过程当中不仅要使得整个网站以及界面的功能实现能力强，相关使用者操作起来也需要便利。除此之外，美化网页的视....</p>
-							</div>
-						</div>
-					</a>
-				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -343,7 +303,10 @@
 
 	<script>
 		function caseDetails(o) {
-			window.location.href="caseDetails/"+o;
+			window.location.href = "caseDetails/" + o;
+		}
+		function newsDetails(o) {
+			window.location.href = "newsDetails/" + o;
 		}
 
 		var swiper = new Swiper('.swiper-container', {

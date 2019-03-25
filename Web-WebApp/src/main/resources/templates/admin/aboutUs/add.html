@@ -11,6 +11,15 @@
 
 <link rel="stylesheet"
 	th:href="@{/plugs/kindeditor/plugins/code/prettify.css}" />
+
+<script type="text/javascript" charset="utf-8"
+	th:src="@{/plugs/ueditor/ueditor.config.js}"> </script>
+<script type="text/javascript" charset="utf-8"
+	th:src="@{/plugs/ueditor/ueditor.all.min.js}"></script>
+<script type="text/javascript" charset="utf-8"
+	th:src="@{/plugs/ueditor/lang/zh-cn/zh-cn.js}"></script>
+
+
 </head>
 
 <body>
@@ -78,25 +87,21 @@
 													<input id="fileaboutUs" name="fileaboutUs" type="file">
 												</div>
 											</div>
-											<input type="hidden"
-												th:value="${aboutUs!=null&&aboutUs.aboutusImg!=null}?${aboutUs.aboutusImg.id}"
+											<input type="hidden" th:value="${aboutUs?.aboutusImg?.id}"
 												name="oldaboutUs" id="aboutUsImg">
 
-
-
-
 											<div class="form-group">
-												<label class="col-lg-1 control-label">Banana图片：</label>
-												<div class="col-lg-6">
-													<input id="file" name="file" type="file" multiple>
+												<label class="col-lg-1 control-label">关于我们banana：</label>
+												<div class="col-lg-6" id="bananafile">
+													<input id="filebanana" name="filebanana" type="file">
 												</div>
 											</div>
-											
-											
-											<input type="hidden" name="id"
-												th:value="${aboutUs!=null}?${aboutUs.id}">
+											<input type="hidden" th:value="${aboutUs?.banana?.id}"
+												name="oldbanana" id="bananaImg"> <input
+												type="hidden" name="id"
+												th:value="${aboutUs!=null}?${aboutUs?.id}">
 
-											<div class="form-group">
+											<!-- 							<div class="form-group">
 												<label class="col-lg-1 control-label">首页显示：</label>
 												<div class="col-lg-6">
 													<div class="ui-select">
@@ -109,14 +114,14 @@
 														</select>
 													</div>
 												</div>
-											</div>
+											</div> -->
 
 
 											<div class="form-group">
 												<label class="col-lg-1 control-label">关于我们：</label>
 												<div class="col-lg-6">
-													<textarea name="aboutus"
-														th:text="${aboutUs!=null}?${aboutUs.aboutus }"></textarea>
+													<script id="editor" type="text/plain"
+														style="width: 1024px; height: 500px;"></script>
 												</div>
 											</div>
 
@@ -152,38 +157,6 @@
 	<div th:replace="public/public_js::pub_js"></div>
 
 
-	<script charset="utf-8" th:src="@{/plugs/kindeditor/kindeditor.js}"></script>
-	<script charset="utf-8" th:src="@{/plugs/kindeditor/lang/zh_CN.js}"></script>
-	<script charset="utf-8"
-		th:src="@{/plugs/kindeditor/plugins/code/prettify.js}"></script>
-	<script>
-KindEditor.ready(function(KK) {
-		var editor1 = KK.create('textarea[name="aboutus"]', {
-			width : "100%", //编辑器的宽度为70%
-			height : "400px", //编辑器的高度为100px
-			uploadJson : 'fileUpload',
-			fileManagerJson : 'fileManager',
-			allowFileManager : true,
-			afterCreate : function() {
-				var self = this;
-				KK.ctrl(document, 13, function() {
-					self.sync();
-					document.forms['aboutUsForm'].submit();
-				});
-				KK.ctrl(self.edit.doc, 13, function() {
-					self.sync();
-					document.forms['aboutUsForm'].submit();
-				});
-			}
-		});
-		prettyPrint();
-	}); 
-	
-</script>
-
-
-
-
 
 
 	<div th:replace="public/public_js::public_script"></div>
@@ -197,13 +170,13 @@ KindEditor.ready(function(KK) {
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
 	<script type="text/javascript" th:inline="javascript"
 		th:src="@{/js/admin/aboutUs/aboutUs.js}"></script>
-	<script type="text/javascript" th:inline="javascript">
 	<div th:replace="public/public_js::validator"></div>
-	var list = null;
-	var pics='' ;
+	<script type="text/javascript" th:inline="javascript">
 	var path = "";
-	var img ;
+	var img;
+	var img2;
 	var aboutUsImg;
+	var bananaImg;
 	/* <![CDATA[ */
 		path = [[@{/}]];
 			   aboutUsImg = [[${aboutUs!=null}?${aboutUs.aboutusImg}:null]];
@@ -235,85 +208,80 @@ KindEditor.ready(function(KK) {
 				$("#aboutUsfile .fileinput-remove").click(function(e){
 				$("#aboutUsImg").val("");
 				})
-	
-	
-	
-	
-	
-	
-	 list = [[${aboutUs.listbanana}]];
-	 if(list.length>0){
-		 for(var i = 0 ;i<list.length;i++){
-				
-				pics = pics+"<div class='file-preview-frame' id='"+list[i].id+"'><div class='kv-file-content' ><img src='"+path+list[i].savePath+"/"+list[i].generateName+"' class='kv-preview-data file-preview-image' title='"+list[i].originalName+"' alt='"+list[i].originalName+"' style='width:150px;height:150px;'></div>"+
-				 "<div class='file-thumbnail-footer'>"+
-				 "<div class='file-footer-caption' title='"+list[i].originalName+"'>"+list[i].originalName+"</div>"+
-				 "<div class='file-thumb-progress hide'><div class='progress '></div></div>"+
-				 "<div class='file-actions'>"+
-				 "<div class='file-footer-buttons'>"+
-				 "<button type='button' class='kv-file-remove btn btn-xs btn-default' onclick=deleteImg('"+list[i].id+"'); title='Remove file'>"+
-				 "<i class='glyphicon glyphicon-trash text-danger'></i></button></div>"+ 
-				 "<div class='clearfix'></div></div></div></div>"
-			}
-	 }
+				path = [[@{/}]];
+			   bananaImg = [[${aboutUs!=null}?${aboutUs.banana}:null]];
+			   if(bananaImg!=null){
+				 img2 = "<img src='"+path+bananaImg.savePath+"/"+bananaImg.generateName
+				+"' class='file-preview-image' style='width:auto;height:160px;'>";
+			   }
 
-		$('#file').fileinput({
-			language : 'zh',
-			uploadUrl : '#',
-			allowedFileExtensions : [ 'jpg', 'png', 'gif', 'jpeg', 'bmp' ],
-			dropZoneTitle : "上传图片！",
-			showUpload : false,// 是否显示上传按钮
-			showCaption : true,// 是否显示标题
-			showPreview : true,// 显示预览
-			dropZoneEnabled : true,//是否显示拖拽区域
-			maxFileSize : 1024 * 10, // 单位为kb，如果为0表示不限制文件大小
-			// browseClass : "btn btn-primary btn-lg",//上传选择按钮样式
-			overwriteInitial : false,
-			initialPreviewAsData : false, // 配置上传后是否显示预览
-			maxFileCount : 20, // 表示允许同时上传的最大文件个数
-
-			initialPreview : [
-				pics
-			],
-			// 解决上传图片大小不一
-			previewSettings : {
-				image : {
-					width : "100px",
-					height : "140px"
-				},
-			},
-			// 去掉图片上的缩略图按钮
-			layoutTemplates : {
-				actionDelete : '', //去除上传预览的缩略图中的删除图标
-				actionUpload : '',//去除上传预览缩略图中的上传图片；
-				actionZoom : '' //去除上传预览缩略图中的查看详情预览的缩略图标。
-			},
-
-		})
+				$("#filebanana").fileinput({
+					maxFileCount : 1, //表示允许同时上传的最大文件个数
+					allowedFileExtensions : [ 'jpg', 'gif', 'png', 'jpeg' ],//接收的文件后缀
+					showUpload: false,
+					showCaption: false,
+					showPreview : true,//显示预览
+					browseClass: "btn btn-primary btn-lg",
+					fileType: "any",
+		     	    previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+		      	    initialPreview : [
+		      	  		 	img2,
+					],
+			});
+	
+	
+				//点击删除按钮之后将图片所在input清空
+				$("#bananafile .fileinput-remove-button").click(function(e){
+					$("#bananaImg").val(""); 
+				})
+				//点击删除按钮之后将图片所在input清空
+				$("#bananafile .fileinput-remove").click(function(e){
+				$("#bananaImg").val("");
+				})
+	
 /* ]]> */
-
-	
-	
 		
-		
-		
-	
-function deleteImg(id){
-	if(id!=null){
-		$.ajax({
-			type : 'POST',
-			url : "deleteImg",
-			data : "id=" + id,
-			dataType : "json",
-			success : function(data) {
-				$("#"+id).remove();
-			
-			}
-		});
-	}
-		}
 		
 	</script>
+
+
+
+	<script type="text/javascript" th:inline="javascript">
+ 
+  /*<![CDATA[*/
+  var content = [[${aboutUs?.aboutus}]];
+  /*]]>*/
+  //实例化编辑器
+  //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+  var ue = UE.getEditor('editor');
+
+  function setContent(isAppendTo) {
+      UE.getEditor('editor').setContent(content, isAppendTo);
+  }
+ 
+  
+	</script>
+
+	<script type="text/javascript">
+  $(function(){
+	  setTimeout(function(){
+		  setContent(false);
+	  },500);
+  })
+ 
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

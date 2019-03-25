@@ -25,6 +25,8 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 
 	@Value("${upload-imgpath}")
 	private String imgpath;
+	@Value("${video.savePath}")
+	private String video;
 	@Value("${upload-dir}")
 	private String dir;
 	
@@ -33,6 +35,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
 //    	registry.addResourceHandler("/img/**").addResourceLocations("file:"+filepath+"/"); 
 //    	registry.addResourceHandler(savePath+"/**").addResourceLocations("file:"+savePath+"/");
     	registry.addResourceHandler(imgpath+"/**").addResourceLocations("file:"+dir+imgpath+"/");
+    	registry.addResourceHandler(video+"/**").addResourceLocations("file:"+dir+video+"/");
 	    	super.addResourceHandlers(registry);
 	    }
 		  

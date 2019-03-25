@@ -5,20 +5,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"
-	name="viewport" /></head>
+	name="viewport" />
+
+<head th:include="/front/public/public_css::pub_css"></head>
 
 <body>
-
 	<!--导航-->
-	<nav th:include="menu"></nav>
-
-	
+	<div th:replace="/front/public/public::menu"></div>
 	<!--导航-->
 	<!-- banner -->
 	<div class="swiper-container about_banner about_banners">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide"
-				style="background-image: url(/assets/zhongchi/front/assets/img/about_banner.jpg)"></div>
+				th:style="|background-image: url(@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.generateName})|"></div>
 		</div>
 	</div>
 	<!-- main -->
@@ -35,21 +34,17 @@
 							</div>
 							<div class="box">
 								<div class="col-sm-5">
-									<img class="img-responsive" src="assets/img/about (2).jpg"
+									<img class="img-responsive" style="width: 450px;height: 380px;"
+										th:src="|@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.generateName}|"
 										alt="">
 								</div>
-								<div class="col-sm-7">
-									<h3></h3>
-									<p>北京网络科技有限公司（简称“”）隶属于上海乘同信息科技有限公司旗下子公司。是一家专注于互联网开发的高新技术公司。公司拥有一支国内最高端的开发技术团队。</p>
-
-									<p>以消费者需求为设计出发点，以客户利益至上为目的，一直致力于移动App开发(android,ios,window,)、网站开发、微信开发、美工UI设计、MES、云服务等应用。只做最赏心悦目的产品。</p>
-
-									<p>通过多年的努力和积累，已助力各行各业的客户成功进入互联网的大时代。依靠积极的价值观念、先进的技术实力、灵活的合作模式，周到的贴心服务获得了客户和企业的高度赞誉</p>
+								<div class="col-sm-7" th:utext="${aboutUs.aboutus}">
+									
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="do_well yctd">
+					<!-- <div class="do_well yctd">
 						<div class="container">
 							<div class="index_titlebox">
 								<h3 class="index_title">企业文化</h3>
@@ -101,7 +96,7 @@
 									<div class="title_box">发展观</div>
 								</div>
 							</div>
-							<!-- 我们态度PC端显示的样式 -->
+							我们态度PC端显示的样式
 							<div class="box visible-lg">
 								<div class="col-sm-3">
 									<figure class="imghvr-flip-diag-2">
@@ -153,7 +148,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 
 			</div>
@@ -161,7 +156,7 @@
 	</div>
 
 	<!-- 底部 -->
-	<div th:replace="/front/public/public_js::footer"></div>
+	<div th:replace="/front/public/public::footer"></div>
 	<!-- 底部js -->
 	<div th:replace="/front/public/public_js::pub_js"></div>
 

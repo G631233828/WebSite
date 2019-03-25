@@ -11,7 +11,7 @@ import java.util.List;
 public class Pagination<T> {
 
 	// 导航页码数
-	private int navigatePages = 5;
+	private int navigatePages = 8;
 	// 所有导航页号
 	private int[] navigatepageNums;
 

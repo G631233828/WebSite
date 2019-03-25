@@ -24,10 +24,10 @@ import zhongchiedu.website.pojo.News;
 import zhongchiedu.website.pojo.Products;
 import zhongchiedu.website.service.CasePresentationService;
 import zhongchiedu.website.service.CompanyService;
+import zhongchiedu.website.service.NewsService;
 import zhongchiedu.website.service.impl.AboutUsServiceImpl;
 import zhongchiedu.website.service.impl.CooperativeParnerServiceImpl;
 import zhongchiedu.website.service.impl.HonorServiceImpl;
-import zhongchiedu.website.service.impl.NewsServiceImpl;
 import zhongchiedu.website.service.impl.ProductsServiceImpl;
 
 @Controller
@@ -41,7 +41,7 @@ public class website {
 	private HonorServiceImpl honorServiceImpl;
 
 	@Autowired
-	private NewsServiceImpl newsService;
+	private NewsService newsService;
 
 	@Autowired
 	private CompanyService companySercvice;
@@ -60,6 +60,12 @@ public class website {
 		// 获取所有显示在首页的成功案例
 		List<CasePresentation> listcase = this.casePresentationService.findTopCasePresentation();
 		model.addAttribute("listcase", listcase);
+		//获取4条最新的新闻数据
+		List<News> listnews = this.newsService.findNewsByDate(4);
+		model.addAttribute("listnews", listnews);
+		
+		
+		
 
 		// Query query = new Query();
 		// AboutUs aboutUs = this.aboutUsService.findOneByQuery(new Query(),
@@ -107,6 +113,41 @@ public class website {
 
 		return "front/case_details";
 	}
+	
+	
+	@RequestMapping("newsDetails/{id}")
+	public String newsDetails(HttpServletRequest request, HttpSession session, Model model,
+			@PathVariable(value = "id") String id) {
+		// 通过id查询案例
+		News news = this.newsService.findOneById(id, News.class);
+		model.addAttribute("news", news);
+		String ip = request.getRemoteAddr();
+		String getIp = (String) session.getAttribute(ip + "_" + id);
+		if (Common.isEmpty(getIp)) {
+			this.newsService.updateNewsVisit(id);
+			session.setAttribute(ip + "_" + id, ip + "_" + id);
+		}
+		News up = new News();
+		News next = new News();
+		
+		// 获取所有非禁用状态的新闻
+		List<News> listnews = this.newsService.findAllNews();
+		int upNum = 0;
+		int nextNum = 0;
+		if (listnews.size() > 0) {
+			for (int i = 0; i < listnews.size(); i++) {
+				if (listnews.get(i).getId().equals(news.getId())) {
+					nextNum = i == listnews.size()-1?0:i+1;
+					upNum = i==0?listnews.size()-1:i-1;
+				}
+			}
+			next = listnews.get(nextNum);
+			up = listnews.get(upNum);
+			model.addAttribute("next", next != null ? next : null);
+			model.addAttribute("up", up != null ? up : null);
+		}
+		return "front/news_details";
+	}
 
 	@RequestMapping("/aboutUs")
 	public String webaboutUs(HttpSession session, Model model) {
@@ -117,7 +158,6 @@ public class website {
 
 	@RequestMapping("/honor")
 	public String webhonor(HttpSession session, Model model) {
-		Query query = new Query();
 		Honor honor = this.honorServiceImpl.findOneByQuery(new Query(), Honor.class);
 		model.addAttribute("honors", honor);
 		return "front/honor";

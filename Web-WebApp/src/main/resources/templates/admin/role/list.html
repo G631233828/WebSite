@@ -98,7 +98,8 @@ canvas#canvas4 {
 										<thead class="cf">
 											<tr>
 												<th class="numeric" style="width: 20px;">
-													<div class="checkbox checkbox-inline" style="margin-top: 0px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
 														<input type="checkbox" id="checkall" name="checkall" /> <label
 															for="checkall"></label>
 													</div>
@@ -113,7 +114,8 @@ canvas#canvas4 {
 										<tbody>
 											<tr th:each="role:${pageList.datas}">
 												<td class="numeric">
-													<div class="checkbox checkbox-inline" style="margin-top: 0px;">
+													<div class="checkbox checkbox-inline"
+														style="margin-top: 0px;">
 														<input type="checkbox" name="ids" th:id="${role.id}"
 															class="numeric" th:value="${role.id}"> <label
 															th:for="${role.id}"></label>
@@ -122,22 +124,20 @@ canvas#canvas4 {
 												<td class="numeric">[[${role.roleName }]]</td>
 												<td class="numeric">[[${role.roleKey }]]</td>
 												<td class="numeric" th:id="disBtn+${role.id}"
-											th:utext="${role.isDisable eq true }?|<button type='button' onclick=toDisable('${role.id}','role') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${role.id}','role') class='btn btn-success'>启用</button>|"></td>
-													<td class="numeric">[[${role.description }]]</td>
-												<td class="numeric">
-													<shiro:hasPermission name="role:edit">
+													th:utext="${role.isDisable eq true }?|<button type='button' onclick=toDisable('${role.id}','role') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${role.id}','role') class='btn btn-success'>启用</button>|"></td>
+												<td class="numeric">[[${role.description }]]</td>
+												<td class="numeric"><shiro:hasPermission
+														name="role:edit">
 														<button class="btn btn-primary btn-xs"
 															th:onclick="|return toeditPage('${role.id}','role')|">
 															<i class="fa fa-edit"> </i>编辑
 														</button>
-													</shiro:hasPermission> 
-													<shiro:hasPermission name="role:delete">
+													</shiro:hasPermission> <shiro:hasPermission name="role:delete">
 														<button class="btn btn-danger btn-xs"
 															th:onclick="|return del('@{/role/}${role.id}','')|">
 															<i class="fa fa-trash-o"> </i>删除
 														</button>
-													</shiro:hasPermission> 
-													<shiro:hasPermission name="role:author">
+													</shiro:hasPermission> <shiro:hasPermission name="role:author">
 														<button class="btn btn-white btn-xs"
 															th:onclick="|return author('${role.id}')|">
 															<i class="fa fa-wrench"> </i>权限管理
@@ -194,15 +194,15 @@ canvas#canvas4 {
 
 
 					</div>
-			
+
 				</div>
 			</div>
-	<div th:replace="admin/role/author::authorModal"></div>
-	<div th:replace="public/public::myModal"></div>
+			<div th:replace="admin/role/author::authorModal"></div>
+			<div th:replace="public/public::myModal"></div>
 
 		</div>
 	</div>
-	
+
 	<!--  END OF PAPER WRAP -->
 	<!-- 右侧隐藏菜单start -->
 	<div th:replace="public/public::right"></div>
@@ -213,8 +213,8 @@ canvas#canvas4 {
 	<div th:replace="public/public::footer"></div>
 	<!-- Sweet alert -->
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
-
-	<script type="text/javascript"  th:inline="javascript"
+	<div th:replace="public/public_js::validator"></div>
+	<script type="text/javascript" th:inline="javascript"
 		th:src="@{/js/admin/role/role.js}"></script>
 
 

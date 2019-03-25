@@ -15,22 +15,20 @@ import zhongchiedu.general.pojo.MultiMedia;
 @Setter
 /**
  * 关于我们
+ * 
  * @author fliay
  *
- */	
+ */
 public class AboutUs extends GeneralBean<AboutUs> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4195730115753692384L;
-	private String aboutus;//关于我们的文字介绍
+	private String aboutus;// 关于我们的文字介绍
 	@DBRef
-	private List<MultiMedia> listbanana;//显示的banana图片
-	private boolean showInView;//是否在界面显示
+	private MultiMedia banana;// 显示的banana图片
 	@DBRef
 	private MultiMedia aboutusImg;
-	
-	
-	
+
 }
