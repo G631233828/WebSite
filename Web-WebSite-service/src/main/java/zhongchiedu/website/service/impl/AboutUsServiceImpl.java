@@ -33,8 +33,8 @@ public class AboutUsServiceImpl extends GeneralServiceImpl<AboutUs> implements A
 			AboutUs getAboutUs = null;
 			aboutUs.setAboutus(editorValue);
 			//上传关于我们图片
-			List<MultiMedia> aboutUsPic = this.multiMediaSerice.uploadPictures(fileaboutUs, dir, path, "ABOUTUS");
-			List<MultiMedia> bananaPic = this.multiMediaSerice.uploadPictures(filebanana, dir, path, "ABOUTUS_BANANA");
+			List<MultiMedia> aboutUsPic = this.multiMediaSerice.uploadPictures(fileaboutUs, dir, path, "ABOUTUS",460,250);
+			List<MultiMedia> bananaPic = this.multiMediaSerice.uploadPictures(filebanana, dir, path, "ABOUTUS_BANANA",1900,388);
 			if(Common.isNotEmpty(aboutUs.getId())){
 				 getAboutUs = this.findOneById(aboutUs.getId(), AboutUs.class);
 				if(Common.isNotEmpty(getAboutUs)){

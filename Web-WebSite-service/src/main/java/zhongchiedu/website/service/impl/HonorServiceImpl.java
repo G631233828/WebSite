@@ -30,7 +30,7 @@ public class HonorServiceImpl extends GeneralServiceImpl<Honor> {
 		if (Common.isNotEmpty(user)) {
 			Honor getHonor = null;
 			// icon
-			List<MultiMedia> listhonors = this.multiMediaSerice.uploadPictures(honors,dir, imgPath, "HONOR");
+			List<MultiMedia> listhonors = this.multiMediaSerice.uploadPictures(honors,dir, imgPath, "HONOR",200,200);
 			if (Common.isNotEmpty(honor.getId())) {
 				getHonor = this.findOneById(honor.getId(), Honor.class);
 				if (Common.isNotEmpty(getHonor)) {

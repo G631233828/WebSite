@@ -9,6 +9,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,10 +45,12 @@ public class WebMenuController {
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
 			@RequestParam(value = "pageSize", defaultValue = "9999") Integer pageSize, HttpSession session) {
 
+		Query query  = new Query();
+		query.with(new Sort(Direction.ASC, "sort"));
 		// 分页查询数据
 		Pagination<WebMenu> pagination;
 		try {
-			pagination = webMenuService.findPaginationByQuery(new Query(), pageNo, pageSize, WebMenu.class);
+			pagination = webMenuService.findPaginationByQuery(query, pageNo, pageSize, WebMenu.class);
 			if (pagination == null)
 				pagination = new Pagination<WebMenu>();
 

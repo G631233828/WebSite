@@ -43,6 +43,9 @@ $(function() {
 				resUrl : {
 					required : true,
 				},
+				sort : {
+					requierd : true,
+				},
 				parentId : {
 					required : true,
 				},
@@ -55,6 +58,9 @@ $(function() {
 				},
 				resUrl : {
 					required : a + "请输入访问路径"
+				},
+				sort : {
+					required : a+"请输入菜单排序"
 				},
 				parentId : {
 					required : a + "请输入上级菜单"

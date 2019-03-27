@@ -29,7 +29,7 @@
 							th:onclick="|return newsDetails('${news.id}')|">
 								<div class="imgPic">
 									<img
-										th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.generateName}|"
+										th:src="|@{/}${news?.newsImg?.savePath}${news?.newsImg?.compressPicName}|"
 										height="145" width="225">
 								</div>
 								<div class="listInfo">

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,11 +19,14 @@ import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
 import zhongchiedu.website.pojo.AboutUs;
 import zhongchiedu.website.pojo.CasePresentation;
+import zhongchiedu.website.pojo.CaseType;
+import zhongchiedu.website.pojo.Company;
 import zhongchiedu.website.pojo.CooperativeParner;
 import zhongchiedu.website.pojo.Honor;
 import zhongchiedu.website.pojo.News;
 import zhongchiedu.website.pojo.Products;
 import zhongchiedu.website.service.CasePresentationService;
+import zhongchiedu.website.service.CaseTypeService;
 import zhongchiedu.website.service.CompanyService;
 import zhongchiedu.website.service.NewsService;
 import zhongchiedu.website.service.impl.AboutUsServiceImpl;
@@ -54,6 +58,9 @@ public class website {
 
 	@Autowired
 	private CasePresentationService casePresentationService;
+	
+	@Autowired
+	private CaseTypeService caseTypeService;
 
 	@RequestMapping("/index")
 	public String webIndex(HttpSession session, Model model) {
@@ -63,18 +70,8 @@ public class website {
 		//获取4条最新的新闻数据
 		List<News> listnews = this.newsService.findNewsByDate(4);
 		model.addAttribute("listnews", listnews);
+		model.addAttribute("active","index");
 		
-		
-		
-
-		// Query query = new Query();
-		// AboutUs aboutUs = this.aboutUsService.findOneByQuery(new Query(),
-		// AboutUs.class);
-		// model.addAttribute("aboutUs", aboutUs);
-		// List<Products> list=this.productsService.find(new
-		// Query().addCriteria(Criteria.where("isDisable").is(false)),
-		// Products.class);
-		// model.addAttribute("products", list);
 		return "front/index";
 	}
 
@@ -110,9 +107,45 @@ public class website {
 			model.addAttribute("up", upcasePresentation != null ? upcasePresentation : null);
 
 		}
+		model.addAttribute("active","caseDetails");
 
 		return "front/case_details";
 	}
+	
+	
+
+
+	@RequestMapping("/casePresentation")
+	public String casePresentation(Model model,@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+			@RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize, String caseTypeId){
+		//获取所有的类别
+		List<CaseType> caseTypes = this.caseTypeService.find(new Query().addCriteria(Criteria.where("isDisable").is(false)), CaseType.class);
+		model.addAttribute("caseTypes", caseTypes);
+		// 分页查询数据
+		Pagination<CasePresentation> pagination;
+		try {
+			Query query = new Query();
+			if(Common.isNotEmpty(caseTypeId)){
+				query.addCriteria(Criteria.where("caseTypes.$id").is(new ObjectId(caseTypeId)));
+			}
+			query.addCriteria(Criteria.where("isDisable").is(false));
+			pagination = casePresentationService.findPaginationByQuery(query, pageNo, pageSize, CasePresentation.class);
+			if (pagination == null)
+				pagination = new Pagination<CasePresentation>();
+
+			model.addAttribute("caseTypeId", caseTypeId);
+			model.addAttribute("pageList", pagination);
+			model.addAttribute("active","casePresentation");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "front/case_list";
+	}
+	
+	
 	
 	
 	@RequestMapping("newsDetails/{id}")
@@ -146,6 +179,7 @@ public class website {
 			model.addAttribute("next", next != null ? next : null);
 			model.addAttribute("up", up != null ? up : null);
 		}
+		model.addAttribute("active","newsDetails");
 		return "front/news_details";
 	}
 
@@ -153,8 +187,22 @@ public class website {
 	public String webaboutUs(HttpSession session, Model model) {
 		AboutUs aboutUs = this.aboutUsService.findOneByQuery(new Query(), AboutUs.class);
 		model.addAttribute("aboutUs", aboutUs);
+		model.addAttribute("active","aboutUs");
 		return "front/about";
 	}
+	
+	@RequestMapping("/contactUs")
+	public String contactUs(Model model){
+		
+		Company cp = this.companySercvice.findOneByQuery(new Query(), Company.class);
+		model.addAttribute("company", cp);
+		model.addAttribute("active","contactUs");
+		return "front/contact_us";
+		
+	}
+	
+	
+	
 
 	@RequestMapping("/honor")
 	public String webhonor(HttpSession session, Model model) {
@@ -180,6 +228,7 @@ public class website {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		model.addAttribute("active","news");
 		return "front/news";
 	}
 
@@ -197,7 +246,7 @@ public class website {
 		// this.newsService.updateNewsVisit(id);
 		// session.setAttribute(ip+"_"+id, ip+"_"+id);
 		// }
-
+		model.addAttribute("active","news");
 		return "front/news_detail";
 	}
 

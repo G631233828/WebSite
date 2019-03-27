@@ -37,7 +37,7 @@ public class ProductsServiceImpl extends GeneralServiceImpl<Products> {
 		 if(Common.isNotEmpty(user)){
 			Products getproducts = null;
 			//上传关于产品图片
-			List<MultiMedia> productsImg = this.multiMediaSerice.uploadPictures(file,dir, path, "Products");
+			List<MultiMedia> productsImg = this.multiMediaSerice.uploadPictures(file,dir, path, "Products",200,200);
 			if(video!=null) {
 				mult=this.multiMediaSerice.uploadVideo(video,dir,videopath, "Products");
 			}

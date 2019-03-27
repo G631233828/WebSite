@@ -17,22 +17,21 @@
 						class="icon-bar"></span>
 				</button>
 				<a href="index.html" class="navbar-brand"><img
-					src="assets/img/logo.png"
-					style="width: 187x; height: 70px; margin-top: 0px;" alt=""></a>
+					th:src="|@{/}${session?.settings?.logo?.savePath}${session?.settings?.logo?.compressPicName}|"
+					style=" margin-top: 0px;" alt=""></a>
 			</div>
 			<!-- 小屏幕导航按钮和LOGO -->
 
 			<!-- 大屏幕导航 -->
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li th:each="menu:${session.webMenus}"><a th:href="|@{/}${menu.resUrl}|">[[${menu.name}]]</a></li>
-
+					<li th:each="menu:${session.webMenus}"><a  th:class="${#strings.contains(menu.resUrl,active)}?'on':''" th:href="|@{/}${menu.resUrl}|">[[${menu.name}]]</a></li>
 				</ul>
 			</div>
 			<!-- 大屏幕导航 -->
 		</div>
 	</nav>
-	<!--导航-->
+	<!--导航 class="on"-->
 	
 
 
@@ -42,7 +41,7 @@
 		<div class="footer visible-lg">
 			<div class="container">
 				<ul class="list-inline">
-					<li th:each="menu:${session.webMenus}"><a th:href="${menu.resUrl}">[[${menu.name}]]</a><span>|</span></li>
+					<li th:each="menu:${session.webMenus}"><a th:href="|@{/}${menu.resUrl}|">[[${menu.name}]]</a><span>|</span></li>
 				</ul>
 				<div class="row">
 					<div class="col-sm-5">

@@ -31,16 +31,16 @@ public class SettingsServiceImpl extends GeneralServiceImpl<Settings> {
 		if (Common.isNotEmpty(user)) {
 			Settings getsettings = null;
 			// icon
-			List<MultiMedia> icon = this.multiMediaSerice.uploadPictures(fileicon,dir, imgPath, "SETTINGS_ICON");
+			List<MultiMedia> icon = this.multiMediaSerice.uploadPictures(fileicon,dir, imgPath, "SETTINGS_ICON",80,80);
 
 			// logo
-			List<MultiMedia> logo = this.multiMediaSerice.uploadPictures(filelogo, dir,imgPath, "SETTINGS_LOGO");
+			List<MultiMedia> logo = this.multiMediaSerice.uploadPictures(filelogo, dir,imgPath, "SETTINGS_LOGO",187,70);
 			
 			// logo
-			List<MultiMedia> qRcod = this.multiMediaSerice.uploadPictures(fileqRcode,dir, imgPath, "SETTINGS_QRCODE");
+			List<MultiMedia> qRcod = this.multiMediaSerice.uploadPictures(fileqRcode,dir, imgPath, "SETTINGS_QRCODE",80,80);
 
 			// banana
-			List<MultiMedia> list = this.multiMediaSerice.uploadPictures(filebanana, dir,imgPath, "SETTINGS_BANANA");
+			List<MultiMedia> list = this.multiMediaSerice.uploadPictures(filebanana, dir,imgPath, "SETTINGS_BANANA",1903,790);
 
 			if (Common.isNotEmpty(settings.getId())) {
 

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -37,11 +39,19 @@ public class WebSiteInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 		HttpSession session = request.getSession();
+		
+		
+		
+		
+		
+		
+		
 		//获取企业配置
 		Company company = this.companyService.findOneByQuery(new Query(), Company.class);
 		session.setAttribute("company", company);
 		//查询网页菜单
 		Query query = new Query();
+		query.with(new Sort(Direction.ASC, "sort"));
 		query.addCriteria(Criteria.where("isDisable").is(false)).addCriteria(Criteria.where("type").is("1"));
 		List<WebMenu> webMenulist = this.webMenuService.find(query, WebMenu.class);
 		session.setAttribute("webMenus", webMenulist);

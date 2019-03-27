@@ -23,7 +23,7 @@ public class CompanyServiceImpl extends GeneralServiceImpl<Company> implements C
 	public void saveOrUpdate(Company company,MultipartFile[] file,String oldQrCode,String path,String dir) {
 		Company getCompany = null;
 		//上传图片
-		List<MultiMedia> companyPic = this.multiMediaSerice.uploadPictures(file, dir, path, "COMPANY");
+		List<MultiMedia> companyPic = this.multiMediaSerice.uploadPictures(file, dir, path, "COMPANY",105,105);
 		if(Common.isNotEmpty(company.getId())){
 			//执行修改
 			getCompany = this.findOneById(company.getId(), Company.class);

@@ -17,7 +17,7 @@
 	<div class="swiper-container about_banner about_banners">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide"
-				th:style="|background-image: url(@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.generateName})|"></div>
+				th:style="|background-image: url(@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.compressPicName})|"></div>
 		</div>
 	</div>
 	<!-- main -->
@@ -30,12 +30,12 @@
 						<div class="container">
 							<div class="index_titlebox">
 								<h3 class="index_title">关于我们</h3>
-								<p class="index_intro">我们信仰并一直坚持，为客户打造真正有价值的互联网平台</p>
+								<p class="index_intro"></p>
 							</div>
 							<div class="box">
 								<div class="col-sm-5">
 									<img class="img-responsive" style="width: 450px;height: 380px;"
-										th:src="|@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.generateName}|"
+										th:src="|@{/}${aboutUs?.aboutusImg?.savePath}${aboutUs?.aboutusImg?.compressPicName}|"
 										alt="">
 								</div>
 								<div class="col-sm-7" th:utext="${aboutUs.aboutus}">

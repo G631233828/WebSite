@@ -43,8 +43,7 @@ public class CasePresentationServiceImpl extends GeneralServiceImpl<CasePresenta
 		casePresentation.setContent(editorValue);
 		casePresentation.setCaseTypes(list);
 		// 上传图片
-		List<MultiMedia> casePresentationPic = this.multiMediaService.uploadPictures(file, dir, path,
-				"CASEPRESENTATION");
+		List<MultiMedia> casePresentationPic = this.multiMediaService.uploadPictures(file, dir, path, "CASEPRESENTATION",400,240);
 		if (Common.isNotEmpty(casePresentation.getId())) {
 			// 执行修改
 			getcasePresentation = this.findOneById(casePresentation.getId(), CasePresentation.class);

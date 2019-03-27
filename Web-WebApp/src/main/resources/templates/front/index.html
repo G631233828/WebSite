@@ -114,7 +114,7 @@
 						th:each="case:${listcase}">
 						<div class="image01">
 							<img width="360px;" height="226px;"
-								th:src="@{/}+${case?.media?.savePath}+${case?.media?.generateName}"
+								th:src="@{/}+${case?.media?.savePath}+${case?.media?.compressPicName}"
 								alt="">
 							<div class="title">[[${case.name}]]</div>
 							<div class="ovrly"></div>
@@ -136,7 +136,7 @@
 	<!-- 我们是设计师、工程师、梦想缔造者 也是您的互联网服务保障 -->
 	<div class="waist_line">
 		<h2 class="tc wow fadeInDown">
-			为学校提供优质服务，客户的需求至上</br>提供一站式服务，为您保驾护航
+			为学校提供优质服务，客户的需求至上</br>提供一站式服务
 		</h2>
 		<div align="center" class="tc index_button wow fadeInUp">
 			<a class="btn">了解更多</a> <a class="btn">联系我们</a>
@@ -146,49 +146,23 @@
 	<div class="do_well">
 		<div class="container">
 			<div class="index_titlebox">
-				<h3 class="index_title">我们的服务品质</h3>
-				<p class="index_intro">不同的媒介，拥有同样的精彩</p>
+				<h3 class="index_title">我们的服务</h3>
+				<p class="index_intro"></p>
 			</div>
 			<div class="box hidden-xs">
 				<div class="col-sm-4">
 					<div class="he_3DFlipY">
 						<div class="he_3DFlipY_inner">
 							<div class="he_3DFlipY_img">
-								<span><i class="icon iconfont">&#xec9c;</i></span> <span><i
-									class="icon iconfont">&#xeca9;</i></span> <span><i
-									class="icon iconfont">&#xecce;</i></span>
-								<p>
-									触及视觉灵魂的设计趋势</br> 精心布局的用户体验</br> 毫无顾忌地通过任何终端</br> 呈现在客户的眼前
-								</p>
-							</div>
-							<div class="he_3DFlipY_caption">
-								<span><i class="icon iconfont">&#xec9c;</i></span> <span><i
-									class="icon iconfont">&#xeca9;</i></span> <span><i
-									class="icon iconfont">&#xecce;</i></span>
-								<p>
-									触及视觉灵魂的设计趋势</br> 精心布局的用户体验</br> 毫无顾忌地通过任何终端</br> 呈现在客户的眼前
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="he_3DFlipY">
-						<div class="he_3DFlipY_inner">
-							<div class="he_3DFlipY_img">
-								<span><i class="icon iconfont">&#xecc6;</i></span> <span><i
-									class="icon iconfont">&#xecaa;</i></span> <span><i
-									class="icon iconfont">&#xecb9;</i></span>
+								<span>微信开发</span>
 								<p class="p2">
-									Html5 + CSS3 响应式布局</br> 卓越的浏览器兼容性</br> 因为高端，所以出众</br>
+									专业定制微信公众号、微信小程序、<br/>企业号、服务号、订阅号，微官网、微商城、<br/>微信支付功能、微信接口等开发定制。
 								</p>
 							</div>
 							<div class="he_3DFlipY_caption">
-								<span><i class="icon iconfont">&#xecc6;</i></span> <span><i
-									class="icon iconfont">&#xecaa;</i></span> <span><i
-									class="icon iconfont">&#xecb9;</i></span>
+								<span>微信开发</span>
 								<p>
-									Html5 + CSS3 响应式布局</br> 卓越的浏览器兼容性</br> 因为高端，所以出众</br>
+									专业定制微信公众号、微信小程序、<br/>企业号、服务号、订阅号，微官网、微商城、<br/>微信支付功能、微信接口等开发定制。
 								</p>
 							</div>
 						</div>
@@ -198,67 +172,38 @@
 					<div class="he_3DFlipY">
 						<div class="he_3DFlipY_inner">
 							<div class="he_3DFlipY_img">
-								<span><i class="icon iconfont">&#xeca2;</i></span> <span><i
-									class="icon iconfont">&#xecb6;</i></span> <span><i
-									class="icon iconfont">&#xecb4;</i></span>
-								<p>
-									基于 B/S 架构的网站建设</br> 无障碍的跨平台应用</br> 无须用户下载安装即可使用</br> 云端管理，轻松维护
+								<span>网站建设</span>
+								<p class="p2">
+									专业开发定制各类网站，<br/>包括企业官网、品牌官网设计、行业门户网站<br/>电商网站、营销型网站、集团网站等。
 								</p>
 							</div>
 							<div class="he_3DFlipY_caption">
-								<span><i class="icon iconfont">&#xeca2;</i></span> <span><i
-									class="icon iconfont">&#xecb6;</i></span> <span><i
-									class="icon iconfont">&#xecb4;</i></span>
+								<span>网站建设</span>
 								<p>
-									基于 B/S 架构的网站建设</br> 无障碍的跨平台应用</br> 无须用户下载安装即可使用</br> 云端管理，轻松维护
+									专业开发定制各类网站，<br/>包括企业官网、品牌官网设计、行业门户网站<br/>电商网站、营销型网站、集团网站等。
 								</p>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="quality visible-xs">
-				<div class="media wow fadeInLeft">
-					<a href="#">
-						<div class="media-left wow fadeInLeft">
-							<img class="media-object" data-src="holder.js/98x98"
-								src="assets/img/dnzd.png" style="width: 98px; height: 98px;">
+				<div class="col-sm-4">
+					<div class="he_3DFlipY">
+						<div class="he_3DFlipY_inner">
+							<div class="he_3DFlipY_img">
+								<span>软件定制开发</span>
+								<p>
+									专业定制各类软件，<br/>包括OA办公系统、CRM系统、<br/>ERP系统、设备管理、库存管理、<br/>教育培训、物流系统、人事管理系统等。
+								</p>
+							</div>
+							<div class="he_3DFlipY_caption">
+										<span>软件定制开发</span>
+								<p>
+										专业定制各类软件，<br/>包括OA办公系统、CRM系统、<br/>ERP系统、设备管理、库存管理、<br/>教育培训、物流系统、人事管理系统等。
+							
+								</p>
+							</div>
 						</div>
-						<div class="media-body wow fadeInRight">
-							<p>
-								<span>触及视觉灵魂的设计趋势</span><br> <span>精心布局的用户体验</span><br>
-								<span>毫无顾忌地通过任何终端</span><br> <span>呈现在客户的眼前</span>
-							</p>
-						</div>
-					</a>
-				</div>
-				<div class="media">
-					<a href="#">
-						<div class="media-left wow fadeInLeft">
-							<img class="media-object" data-src="holder.js/98x98"
-								src="assets/img/llq.png" style="width: 98px; height: 98px;">
-						</div>
-						<div class="media-body wow fadeInRight">
-							<p>
-								<span>Html5 + CSS3 响应式布局</span><br> <span>卓越的浏览器兼容性</span><br>
-								<span>因为高端，所以出众</span><br>
-							</p>
-						</div>
-					</a>
-				</div>
-				<div class="media">
-					<a href="#">
-						<div class="media-left wow fadeInLeft">
-							<img class="media-object" data-src="holder.js/98x98"
-								src="assets/img/jg.png" style="width: 98px; height: 98px;">
-						</div>
-						<div class="media-body wow fadeInRight">
-							<p>
-								<span>基于 B/S 架构的网站建设</span><br> <span>无障碍的跨平台应用</span><br>
-								<span>无须用户下载安装即可使用</span><br> <span>云端管理，轻松维护</span>
-							</p>
-						</div>
-					</a>
+					</div>
 				</div>
 			</div>
 		</div>

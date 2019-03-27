@@ -30,7 +30,7 @@ public class CooperativeParnerServiceImpl extends GeneralServiceImpl<Cooperative
 		if (Common.isNotEmpty(user)) {
 			CooperativeParner getparners = null;
 			// icon
-			List<MultiMedia> listparner = this.multiMediaSerice.uploadPictures(parners, dir, imgPath,  "COOPERATIVEPARNER");
+			List<MultiMedia> listparner = this.multiMediaSerice.uploadPictures(parners, dir, imgPath,  "COOPERATIVEPARNER",200,200);
 			if (Common.isNotEmpty(cp.getId())) {
 				getparners = this.findOneById(cp.getId(), CooperativeParner.class);
 				if (Common.isNotEmpty(getparners)) {

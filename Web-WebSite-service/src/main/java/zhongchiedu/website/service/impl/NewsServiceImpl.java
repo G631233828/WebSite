@@ -41,7 +41,7 @@ public class NewsServiceImpl extends GeneralServiceImpl<News> implements NewsSer
 		News getnews = null;
 		news.setNewsContent(editorValue);
 		// 上传关于我们图片
-		List<MultiMedia> newsImg = this.multiMediaSerice.uploadPictures(file, dir, path, "NEWS");
+		List<MultiMedia> newsImg = this.multiMediaSerice.uploadPictures(file, dir, path, "NEWS",225,145);
 		if (Common.isNotEmpty(news.getId())) {
 			getnews = this.findOneById(news.getId(), News.class);
 			if (Common.isNotEmpty(getnews)) {
