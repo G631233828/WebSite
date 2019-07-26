@@ -45,5 +45,7 @@ public class CasePresentation extends GeneralBean<CasePresentation> {
 	
 	@Transient
 	private String types;
+	
+	
 
 }

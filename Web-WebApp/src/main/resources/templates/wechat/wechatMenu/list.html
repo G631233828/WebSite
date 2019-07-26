@@ -50,14 +50,14 @@
 						<div class="nest" id="Blank_PageClose">
 							<div class="title-alt">
 								<shiro:hasPermission name="wechatmenu:add">
-									<button class="btn btn-default btn-sm" th:if="${supMenuSize < 3}"
-										onclick="return add('0');">
+									<button class="btn btn-default btn-sm"
+										th:if="${supMenuSize < 3}" onclick="return add('0');">
 										<i class="glyphicon glyphicon-plus"> </i> 添加
 									</button>
 								</shiro:hasPermission>
-								
+
 								<shiro:hasPermission name="wechatmenu:release">
-									<button class="btn btn-primary btn-sm" 
+									<button class="btn btn-primary btn-sm"
 										onclick="return release();">
 										<i class="glyphicon glyphicon-plus"> </i>发布
 									</button>
@@ -106,13 +106,11 @@
 													<li class="dd-item" data-id="3">
 														<div class="dd-handle" th:each="menusub:${wechatMenu}"
 															th:if="${menusub.parentId eq menu.id}">
-															[[${menusub.name}]]
-															<a class="btn btn-link btn-danger "
-															th:onclick="|return del('@{/wechatmenu/}${menusub.id}','');|"
-															style="float: right; margin-left: 2px; margin-top: -5px;">
-															<span class="fa fa-trash-o"></span>
-														</a>
-															 <a class="btn btn-link"
+															[[${menusub.name}]] <a class="btn btn-link btn-danger "
+																th:onclick="|return del('@{/wechatmenu/}${menusub.id}','');|"
+																style="float: right; margin-left: 2px; margin-top: -5px;">
+																<span class="fa fa-trash-o"></span>
+															</a> <a class="btn btn-link"
 																th:onclick="|return edit('1','${menusub.id}');|"
 																style="float: right; margin-top: -5px;"> <span
 																class="entypo-pencil"></span>
@@ -151,10 +149,9 @@
 	<div th:replace="public/public_js::public_script"></div>
 	<div th:replace="public/public::footer"></div>
 	<script th:src="@{/assets/js/nestable/jquery.nestable.js}"></script>
-	<script  th:src="@{/js/wechat/wechatMenu/wechatMenu.js}"></script>
+	<script th:src="@{/js/admin/wechatMenu/wechatMenu.js}"></script>
 	<!-- Sweet alert -->
 	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
-
 
 </body>
 

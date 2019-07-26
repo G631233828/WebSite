@@ -47,23 +47,23 @@
 						<div class="nest" id="tableStaticClose">
 							<div class="title-alt">
 								<div>
-									<!-- <shiro:hasPermission name="products:add"> -->
+									<!-- <shiro:hasPermission name="product:add"> -->
 										<button class="btn btn-default btn-sm"
-											th:onclick="|window.location.href='@{/products}'|">
+											th:onclick="|window.location.href='@{/product}'|">
 											<i class="glyphicon glyphicon-plus"> </i> 添加
 										</button>
 									<!-- </shiro:hasPermission> -->
 
-									<!-- <shiro:hasPermission name="products:edit"> -->
+									<!-- <shiro:hasPermission name="product:edit"> -->
 										<button class="btn btn-primary btn-sm"
-											onclick="return toeditPage('','products')">
+											onclick="return toeditPage('','product')">
 											<i class="fa fa-edit"> </i>编辑
 										</button>
 									<!-- </shiro:hasPermission> -->
 
-									<!-- <shiro:hasPermission name="products:delete"> -->
+									<!-- <shiro:hasPermission name="product:delete"> -->
 										<button class="btn btn-danger btn-sm"
-											th:onclick="|return del('','@{/products/}')|">
+											th:onclick="|return del('','@{/product/}')|">
 											<i class="fa fa-trash-o"> </i>删除
 										</button>
 									<!-- </shiro:hasPermission> -->
@@ -97,43 +97,48 @@
 															for="checkall"></label>
 													</div>
 												</th>
-												<th class="numeric">产品名字</th>
-										        <th class="numeric">产品类型</th>
-										        <th class="numeric">产品排序</th>  
+												<th class="numeric">产品名称</th>
+												<th class="numeric">产品分类</th>
 												<th class="numeric">发布时间</th>
-												<th class="numeric">视频介绍</th>
+												<th class="numeric">浏览量</th>
+												<th class="numeric">使用状态</th>
 												<th class="numeric">操作</th>
 											</tr>
 										</thead>
 										<tbody>
 											<!-- 目录 -->
-											<th:block th:each="products:${pageList.datas}">
+											<th:block th:each="product:${pageList.datas}">
 												<tr>
 													<td class="numeric">
 														<div class="checkbox checkbox-inline"
 															style="margin-top: 0px;">
-															<input type="checkbox" name="ids" th:id="${products.id}"
-																class="numeric" th:value="${products.id}"> <label
-																th:for="${products.id}"></label>
+															<input type="checkbox" name="ids" th:id="${product.id}"
+																class="numeric" th:value="${product.id}"> <label
+																th:for="${product.id}"></label>
 														</div>
 													</td>
 													
-													<td class="numeric">[[${products.name}]]</td>
-													<td class="numeric">[[${products.type}]]</td>
-													<td class="numeric">[[${products.sort}]]</td>
-													<td class="numeric" th:text="${#dates.format(products.createTime,'yyyy-MM-dd hh:mm:ss')}"></td>
-													<td class="numeric" th:id="disBtn+${products.id}"
-														th:utext="${products.isDisable eq true }?|<button type='button' onclick=toDisable('${products.id}','products') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${products.id}','products') class='btn btn-success'>启用</button>|"></td>
-													<td class="numeric"><!-- <shiro:hasPermission
-															name="products:edit"> -->
+													<td class="numeric">[[${product.name}]]</td>
+													<td class="numeric">
+													<th:block th:each="type:${product.caseTypes}">
+															[[${type.name}]]&nbsp;&nbsp;
+													</th:block>
+
+													</td>
+													<td class="numeric" th:text="${#dates.format(product.createTime,'yyyy-MM-dd hh:mm:ss')}"></td>
+													<td class="numeric">[[${product.browseVolume}]]</td>
+													<td class="numeric" th:id="disBtn+${product.id}"
+														th:utext="${product.isDisable eq true }?|<button type='button' onclick=toDisable('${product.id}','product') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${product.id}','product') class='btn btn-success'>启用</button>|"></td>
+													<td class="numeric">
+													<!-- <shiro:hasPermission
+															name="product:edit"> -->
 															<button class="btn btn-primary btn-xs"
-																th:onclick="|return toeditPage('${products.id}','products')|">
+																th:onclick="|return toeditPage('${product.id}','product')|">
 																<i class="fa fa-edit"> </i>编辑
 															</button>
-
-														<!-- </shiro:hasPermission> <shiro:hasPermission name="products:delete"> -->
+														<!-- </shiro:hasPermission> <shiro:hasPermission name="product:delete"> -->
 															<button class="btn btn-danger btn-xs"
-																th:onclick="|return del('@{/products/}${products.id}','')|">
+																th:onclick="|return del('@{/product/}${product.id}','')|">
 																<i class="fa fa-trash-o"> </i>删除
 															</button>
 														<!-- </shiro:hasPermission></td> -->
@@ -162,16 +167,16 @@
 												<ul class="pagination pagination-split pull-right"
 													style="margin-top: 0px;">
 													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
-														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/findproducts?pageNo=}+${pageList.upPage}">上一页</a>
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/findproduct?pageNo=}+${pageList.upPage}">上一页</a>
 													</li>
 													<li th:each="page:${pageList.navigatepageNums}"
 														th:class="${page  == pageList.pageNo}?active:''"><a
-														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/findproducts?pageNo=}+${page}">[[${page}]]</a>
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/findproduct?pageNo=}+${page}">[[${page}]]</a>
 													</li>
 													<li
 														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
 														<a
-														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/findproducts?pageNo=}+${pageList.nextPage}">下一页</a>
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/findproduct?pageNo=}+${pageList.nextPage}">下一页</a>
 													</li>
 												</ul>
 											</div>
@@ -191,6 +196,8 @@
 
 				</div>
 			</div>
+
+
 
 	<div th:replace="public/public::myModal"></div>
 		</div>

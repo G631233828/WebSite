@@ -76,8 +76,23 @@
 														required="required">
 												</div>
 											</div>
-											<
 
+											<div class="form-group">
+												<label class="col-lg-1 control-label">分类类型：</label>
+												<div class="col-lg-6">
+													<div class="ui-select">
+														<select name="type" id="type"
+															class="form-control" required>
+															<option value="CASE"
+																th:selected="${caseType?.type eq T(zhongchiedu.website.pojo.CaseType.Type).CASE}">案例</option>
+															<option value="PRODUCT"
+																th:selected="${caseType?.type eq T(zhongchiedu.website.pojo.CaseType.Type).PRODUCT}">产品</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											
+											
 											<div class="form-group">
 												<label class="col-lg-1 control-label">使用状态：</label>
 												<div class="col-lg-6">

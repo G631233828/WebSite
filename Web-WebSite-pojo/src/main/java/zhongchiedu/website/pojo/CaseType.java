@@ -26,5 +26,12 @@ public class CaseType extends GeneralBean<CaseType> {
 	
 	private String name;//类型名称
 	
+	private Type type;//类别
+	
+	public enum Type{
+		CASE,PRODUCT;
+	}
 	
 }
+
+

@@ -139,7 +139,7 @@
 			为学校提供优质服务，客户的需求至上</br>提供一站式服务
 		</h2>
 		<div align="center" class="tc index_button wow fadeInUp">
-			<a class="btn">了解更多</a> <a class="btn">联系我们</a>
+			<a class="btn" href="javascript:;" onclick="return tomore();">了解更多</a> <a class="btn" href="javascript:;" onclick="return contactUs();">联系我们</a>
 		</div>
 	</div>
 	<!-- 我们的服务品质 -->
@@ -218,18 +218,18 @@
 			<div class="box">
 
 				<div class="col-sm-6  wow fadeInUp" th:each="news:${listnews}">
-					<a  href="javascript:;" th:onclick="|return newsDetails('${news.id}')|">
+					<a  href="javascript:;" th:onclick="|return newsDetails('${news?.id}')|">
 						<div class="media">
 							<div class="media-left">
 								<p >
 									<span class="month"
-										th:text="|${#dates.format(news.createTime,'M')}月|"></span></br> <span
-										class="day" th:text="${#dates.format(news.createTime,'dd')}"></span>
+										th:text="|${#dates.format(news?.createTime,'M')}月|"></span></br> <span
+										class="day" th:text="${#dates.format(news?.createTime,'dd')}"></span>
 								</p>
 							</div>
 							<div class="media-body">
-								<h4 class="media-heading" th:text="${news.title}"></h4>
-								<p th:text="|${#strings.substring(news.description, 0, 60)}...|"></p>
+								<h4 class="media-heading" th:text="${news?.title}"></h4>
+								<p th:text="|${#strings.length(news?.description)>60?#strings.substring(news?.description, 0, 60):news?.description}...|"></p>
 							</div>
 						</div>
 					</a>
@@ -253,6 +253,15 @@
 		function newsDetails(o) {
 			window.location.href = "newsDetails/" + o;
 		}
+		
+		function tomore(){
+			window.location.href = "casePresentation";
+		}
+		function contactUs(){
+			window.location.href = "contactUs";
+		}
+		
+		
 
 		var swiper = new Swiper('.swiper-container', {
 			spaceBetween : 30,

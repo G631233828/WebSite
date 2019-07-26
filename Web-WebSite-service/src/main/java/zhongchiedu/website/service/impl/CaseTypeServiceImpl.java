@@ -53,6 +53,16 @@ public class CaseTypeServiceImpl extends GeneralServiceImpl<CaseType> implements
 	public List<CaseType> listCaseTypes() {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("type").is(CaseType.Type.CASE));//获取枚举类型为CASE的类型
+		List<CaseType> list = this.find(query, CaseType.class);
+		return list;
+	}
+
+	@Override
+	public List<CaseType> listCaseTypesByProduct() {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("isDisable").is(false));
+		query.addCriteria(Criteria.where("type").is(CaseType.Type.PRODUCT));//获取枚举类型为Product的类型
 		List<CaseType> list = this.find(query, CaseType.class);
 		return list;
 	}

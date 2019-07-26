@@ -55,19 +55,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-<!-- 
-		<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
 			移除嵌入式tomcat插件 <exclusions> <exclusion> <groupId>org.springframework.boot</groupId> 
 			<artifactId>spring-boot-starter-tomcat</artifactId> </exclusion> </exclusions> 
-			</dependency> 
-	 <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
+			</dependency> <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
 			<scope>provided</scope> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>
 		<!--添加servlet-api的依赖 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -119,7 +120,7 @@
 		</dependency>
 	</dependencies>
 
-	
+
 	<build>
 		<plugins>
 			<!-- 配置之后每次编译的时候不会去执行junit中的@Test -->

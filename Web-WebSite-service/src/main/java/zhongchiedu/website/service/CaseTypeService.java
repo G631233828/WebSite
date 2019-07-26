@@ -14,5 +14,7 @@ public interface CaseTypeService extends GeneralService<CaseType> {
 	
 	public List<CaseType> listCaseTypes();
 	
+	public List<CaseType> listCaseTypesByProduct();
+	
 	
 }

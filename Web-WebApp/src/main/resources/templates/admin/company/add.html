@@ -67,7 +67,7 @@
 											id="companyForm" name="companyForm"
 											th:action="@{/editcompany}" method="post">
 
-											<input type="hidden" th:value="${company.id}" name="id">
+											<input type="hidden" th:value="${company?.id}" name="id">
 											<div class="form-group">
 												<label class="col-lg-1 control-label">企业名称：</label>
 												<div class="col-lg-6">

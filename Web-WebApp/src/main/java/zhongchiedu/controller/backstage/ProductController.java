@@ -1,10 +1,10 @@
 package zhongchiedu.controller.backstage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-
-
-import javax.servlet.http.HttpSession;
-
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,104 +25,120 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.slf4j.Slf4j;
 import zhongchiedu.common.utils.BasicDataResult;
-import zhongchiedu.common.utils.Contents;
+import zhongchiedu.common.utils.Common;
 import zhongchiedu.framework.pagination.Pagination;
-import zhongchiedu.general.pojo.User;
-import zhongchiedu.general.service.Impl.MultiMediaServiceImpl;
 import zhongchiedu.log.annotation.SystemControllerLog;
-import zhongchiedu.website.pojo.Products;
-import zhongchiedu.website.service.impl.ProductsServiceImpl;
-
-
+import zhongchiedu.website.pojo.CasePresentation;
+import zhongchiedu.website.pojo.CaseType;
+import zhongchiedu.website.pojo.Product;
+import zhongchiedu.website.service.CaseTypeService;
+import zhongchiedu.website.service.ProductService;
 
 @Controller
+@Slf4j
 public class ProductController {
-	
-	private static final Logger log = LoggerFactory.getLogger(ProductController.class);
+	@Autowired
+	private ProductService productService;
 
-	
+	@Autowired
+	private CaseTypeService caseTypeService;
+
 	@Value("${upload-imgpath}")
 	private String imgPath;
-	
 	@Value("${upload-dir}")
 	private String dir;
-	
-	@Value("${video.savePath}")
-	private String videoPath;
-	
-	@Autowired
-	private ProductsServiceImpl productsService;
-    
-	@Autowired
-	private MultiMediaServiceImpl multiMediaService;
-	
-	@GetMapping("/findproducts")
-//	@RequiresPermissions(value = "findproducts:list")
-	@SystemControllerLog(description = "查询所有产品信息")
-	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
-			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize, HttpSession session) {
 
-		User user = (User) session.getAttribute(Contents.USER_SESSION);
-		// 分页查询数据
-		Pagination<Products> pagination;
+	@RequestMapping("/findproduct")
+	@RequiresPermissions(value = "product:list")
+	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, Model model,
+			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
+
+		Pagination<Product> pagination;
 		try {
-			Query query = new Query();
-			pagination = productsService.findPaginationByQuery(new Query(), pageNo, pageSize, Products.class);
-			if (pagination == null)
-				pagination = new Pagination<Products>();
+			pagination = this.productService.findPaginationByQuery(new Query(), pageNo, pageSize, Product.class);
+			if (Common.isEmpty(pagination))
+				pagination = new Pagination<>();
 			model.addAttribute("pageList", pagination);
 		} catch (Exception e) {
-			log.info("查询所有产品失败——————————》" + e.toString());
+			log.info("查询产品失败" + e.toString());
 			e.printStackTrace();
 		}
-		return "admin/products/list";
+		return "admin/product/list";
 	}
 
-	@PostMapping("/products")
-//	@RequiresPermissions(value = "webmenu:add")
+	@GetMapping("/product")
+	public String topage(Model model) {
+		// 查询所有的案例分类
+		List<CaseType> list = this.caseTypeService.listCaseTypesByProduct();
+		model.addAttribute("types", list);
+		return "admin/product/add";
+	}
+
+	@PostMapping("/product")
+	@RequiresPermissions(value = "product:add")
 	@SystemControllerLog(description = "添加产品")
-	public String addResource(@ModelAttribute("products") Products products,HttpSession session,
-			@RequestParam("fileproduct")MultipartFile[] fileproduct,
-			@RequestParam("videoproduct")MultipartFile videoproduct,
-			@RequestParam(defaultValue="",value="oldproductsImg")String oldproductsImg,
-			@RequestParam(defaultValue="",value="oldproductsvideo")String videoId) {
-		System.out.println("------"+videoId);
-		this.productsService.saveOrUpdateProducts(products, session, fileproduct, oldproductsImg, imgPath,videoId,videoproduct,videoPath,dir);
-		return "redirect:findproducts";
+	public String add(@ModelAttribute("product") Product product, String editorValue, String types,
+			MultipartFile[] filemedia, String oldMedia) {
+		this.productService.saveOrUpdate(product, filemedia, oldMedia, imgPath, dir, editorValue, types);
+		return "redirect:findproduct";
 	}
-	
-	
-	
-	@PutMapping("/products")
-//	@RequiresPermissions(value = "webmenu:edit")
-	@SystemControllerLog(description = "修改产品信息")
-	public String editResource(@ModelAttribute("products") Products products,
-			@RequestParam("fileproduct")MultipartFile[] fileproduct,
-			@RequestParam("videoproduct")MultipartFile videoproduct,
-			@RequestParam(defaultValue="",value="oldproductsImg")String oldproductsImg,
-			@RequestParam(defaultValue="",value="oldproductsvideo")String videoId,
-			HttpSession session,Model model) {
-		this.productsService.saveOrUpdateProducts(products, session, fileproduct, oldproductsImg, imgPath,videoId,videoproduct,videoPath,dir);
-		return "redirect:findproducts";
+
+	@PutMapping("/product")
+	@RequiresPermissions(value = "product:edit")
+	@SystemControllerLog(description = "修改产品")
+	public String edit(@ModelAttribute("product") Product product, String editorValue, String types,
+			MultipartFile[] filemedia, String oldMedia) {
+		if (Common.isEmpty(product.getId())) {
+			product.setId(null);
+		}
+		this.productService.saveOrUpdate(product, filemedia, oldMedia, imgPath, dir, editorValue, types);
+		return "redirect:findproduct";
 	}
-	
-	
-	
-	@DeleteMapping("/products/{id}")
-	@SystemControllerLog(description = "删除产品")
-	public String deleteProducts(@PathVariable String id) {
-		this.productsService.remove(Products.class, new Query().addCriteria(Criteria.where("id").is(id)));
-		log.info(id);
-		return "redirect:/findproducts";
+
+	/**
+	 * 跳转到编辑界面
+	 * 
+	 * @return
+	 */
+	@GetMapping("/product{id}")
+	public String toeditPage(@PathVariable String id, Model model) {
+
+		Product product = this.productService.findOneById(id, Product.class);
+		Object[] caseTypes = {};
+		List<CaseType> listc = product.getCaseTypes();
+		if (Common.isNotEmpty(listc)) {
+			List<String> lists = new ArrayList<>();
+			for (int i = 0; i < listc.size(); i++) {
+				lists.add(listc.get(i).getId());
+			}
+			caseTypes = lists.toArray();
+			model.addAttribute("caseTypes", caseTypes);
+		}
+		model.addAttribute("product", product);
+		// 查询所有的案例分类
+		List<CaseType> list = this.caseTypeService.listCaseTypesByProduct();
+		model.addAttribute("types", list);
+		return "admin/product/add";
+
 	}
-	
-	@RequestMapping(value = "/products/disable", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+
+	@RequestMapping(value = "/product/disable", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public BasicDataResult productsDisable(@RequestParam(value = "id", defaultValue = "") String id) {
-		
-	return this.productsService.productsDisable(id);
-		
+	public BasicDataResult disable(@RequestParam(value = "id", defaultValue = "") String id) {
+		return this.productService.disable(id);
 	}
-	
+
+	@DeleteMapping("/product/{id}")
+	@RequiresPermissions(value = "product:delete")
+	@SystemControllerLog(description = "删除产品")
+	public String todelete(@PathVariable String id) {
+		List ids = Arrays.asList(id.split(","));
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").in(ids));
+		this.productService.remove(Product.class, query);
+		return "redirect:/findproduct";
+	}
+
 }

@@ -1,20 +1,4 @@
 
-$(function(){
-	
-	$("#allAuthor").click(function() {
-//		var flag = $("[name=authorIds]:checkbox").is(':checked');
-		var flag = $("[name=allAuthor]:checkbox").is(':checked');
-		
-//		flag = flag == false ? true : false;
-		$("[name=authorIds]:checkbox").each(function() {
-			$(this).prop("checked", flag);
-		})
-	})	
-})
-
-
-
-$().ready(function() {
 	$("#commentForm").validate();
 	var a = "<i class='fa fa-times-circle'></i> ";
 	$("#roleForm").validate({
@@ -57,72 +41,8 @@ $().ready(function() {
 			},
 		}
 	});
-});
-
-function author(o) {
-	
-	$("input[name='authorIds']").attr("checked",false);
-	$("input[name='allAuthor']").attr("checked",false);
-	$("#id").val(o);
-	
-	$.ajax({
-		type : 'POST',
-		url : "getAuthor",
-		data : "id="+o,
-		dataType : "json",
-		success : function(data) {
-			
-			$.each(data.data, function(index, item) {
-				 $(":checkbox[id='"+item.id+"']").prop("checked",true);
-			});
-			
-		}
-	});
-	
-	$("#authorModal").modal('show');
-	
-
-
-}
-
-function toAuthor(){
-	var id = $("#id").val();
-	
-	//获取所有选中的权限
-	
-	var authorIds = $("input[name='authorIds']:checked");
-	//获取所有的id执行删除操作，使用ajax
-	var str = "";
-	$(authorIds).each(function() {
-		str += this.value + ",";
-	});
-	var checkallPermission = str.substring(0, str.length - 1);
-	
-	// 需要通过ajax加载对应的菜单列表
-	$.ajax({
-		type : 'POST',
-		url : "author",
-		data : "checkallPermission=" + checkallPermission+"&id="+id,
-		dataType : "json",
-		success : function(data) {
-		$("#myModal").modal('show');
-		$("#modalbody").text(data.msg);
-		}
-	});
 
 	
 	
 	
 	
-}
-
-
-
-
-
-
-
-
-
-
-

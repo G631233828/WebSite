@@ -21,18 +21,17 @@ import zhongchiedu.website.pojo.AboutUs;
 import zhongchiedu.website.pojo.CasePresentation;
 import zhongchiedu.website.pojo.CaseType;
 import zhongchiedu.website.pojo.Company;
-import zhongchiedu.website.pojo.CooperativeParner;
 import zhongchiedu.website.pojo.Honor;
 import zhongchiedu.website.pojo.News;
-import zhongchiedu.website.pojo.Products;
+import zhongchiedu.website.pojo.Product;
 import zhongchiedu.website.service.CasePresentationService;
 import zhongchiedu.website.service.CaseTypeService;
 import zhongchiedu.website.service.CompanyService;
 import zhongchiedu.website.service.NewsService;
+import zhongchiedu.website.service.ProductService;
 import zhongchiedu.website.service.impl.AboutUsServiceImpl;
 import zhongchiedu.website.service.impl.CooperativeParnerServiceImpl;
 import zhongchiedu.website.service.impl.HonorServiceImpl;
-import zhongchiedu.website.service.impl.ProductsServiceImpl;
 
 @Controller
 @RequestMapping("website")
@@ -51,7 +50,7 @@ public class website {
 	private CompanyService companySercvice;
 
 	@Autowired
-	private ProductsServiceImpl productsService;
+	private ProductService productService;
 
 	@Autowired
 	private CooperativeParnerServiceImpl cooperativeParnerService;
@@ -119,7 +118,7 @@ public class website {
 	public String casePresentation(Model model,@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize, String caseTypeId){
 		//获取所有的类别
-		List<CaseType> caseTypes = this.caseTypeService.find(new Query().addCriteria(Criteria.where("isDisable").is(false)), CaseType.class);
+		List<CaseType> caseTypes = this.caseTypeService.find(new Query().addCriteria(Criteria.where("isDisable").is(false)).addCriteria(Criteria.where("type").is(CaseType.Type.CASE)), CaseType.class);
 		model.addAttribute("caseTypes", caseTypes);
 		// 分页查询数据
 		Pagination<CasePresentation> pagination;
@@ -250,38 +249,94 @@ public class website {
 		return "front/news_detail";
 	}
 
+
+	@RequestMapping("productDetails/{id}")
+	public String productDetails(HttpServletRequest request, HttpSession session, Model model,
+			@PathVariable(value = "id") String id) {
+		// 通过id查询案例
+		Product product = this.productService.findOneById(id, Product.class);
+		model.addAttribute("product", product);
+		String ip = request.getRemoteAddr();
+		String getIp = (String) session.getAttribute(ip + "_" + id);
+		if (Common.isEmpty(getIp)) {
+			this.productService.updateNewsVisit(id);
+			session.setAttribute(ip + "_" + id, ip + "_" + id);
+		}
+		Product upproduct = new Product();
+		Product nextproduct = new Product();
+
+		// 获取所有非禁用状态的案例
+		List<Product> listcase = this.productService.findAllProduct();
+		int up = 0;
+		int next = 0;
+		if (listcase.size() > 0) {
+			for (int i = 0; i < listcase.size(); i++) {
+				if (listcase.get(i).getId().equals(product.getId())) {
+					next = i == listcase.size()-1?0:i+1;
+					up = i==0?listcase.size()-1:i-1;
+				}
+			}
+			nextproduct = listcase.get(next);
+			upproduct = listcase.get(up);
+			model.addAttribute("next", nextproduct != null ? nextproduct : null);
+			model.addAttribute("up", upproduct != null ? upproduct : null);
+
+		}
+		model.addAttribute("active","products");
+
+		return "front/product_details";
+	}
+	
+	
+
+
 	@RequestMapping("/products")
-	public String findProducts(Model model) {
-		Query query = new Query();
-		// query.with(new Sort(new Order(Direction.ASC, "sort")));
-		query.addCriteria(Criteria.where("type").is("硬件"));
-		query.addCriteria(Criteria.where("isDisable").is(false));
-		List<Products> listProduct = productsService.find(query, Products.class);
-		model.addAttribute("products", listProduct);
-		model.addAttribute("type", "hardware");
-		return "front/product";
-	}
+	public String products(Model model,@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+			@RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize, String caseTypeId){
+		//获取所有的类别
+		List<CaseType> caseTypes = this.caseTypeService.find(new Query().addCriteria(Criteria.where("isDisable").is(false)).addCriteria(Criteria.where("type").is(CaseType.Type.PRODUCT)), CaseType.class);
+		model.addAttribute("caseTypes", caseTypes);
+		// 分页查询数据
+		Pagination<Product> pagination;
+		try {
+			Query query = new Query();
+			if(Common.isNotEmpty(caseTypeId)){
+				query.addCriteria(Criteria.where("caseTypes.$id").is(new ObjectId(caseTypeId)));
+			}
+			query.addCriteria(Criteria.where("isDisable").is(false));
+			pagination = productService.findPaginationByQuery(query, pageNo, pageSize, Product.class);
+			if (pagination == null)
+				pagination = new Pagination<Product>();
 
-	@RequestMapping("/software")
-	public String findsoftware(Model model) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("type").is("软件"));
-		query.addCriteria(Criteria.where("isDisable").is(false));
-		List<Products> listProduct = productsService.find(query, Products.class);
-		model.addAttribute("products", listProduct);
-		model.addAttribute("type", "software");
-		return "front/product";
-	}
+			model.addAttribute("caseTypeId", caseTypeId);
+			model.addAttribute("pageList", pagination);
+			model.addAttribute("active","products");
 
-	@RequestMapping("/cooperativeParner")
-	public String cooperativeParner(HttpSession session, Model model) {
-
-		Query query = new Query();
-		query.addCriteria(Criteria.where("isDisable").is(false));
-		CooperativeParner cooperativeParner = this.cooperativeParnerService.findOneByQuery(query,
-				CooperativeParner.class);
-		model.addAttribute("cooperativeParners", cooperativeParner);
-		return "front/cooperativeParner";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "front/product_list";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

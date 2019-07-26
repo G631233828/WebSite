@@ -98,6 +98,7 @@
 													</div>
 												</th>
 												<th class="numeric">类别</th>
+												<th class="numeric">类型</th>
 												<th class="numeric">使用状态</th>
 												<th class="numeric">操作</th>
 											</tr>
@@ -116,6 +117,7 @@
 													</td>
 													
 													<td class="numeric">[[${caseType.name}]]</td>
+													<td class="numeric" th:text="${caseType?.type eq T(zhongchiedu.website.pojo.CaseType.Type).CASE}?'案例':'产品'"></td>
 													<td class="numeric" th:id="disBtn+${caseType.id}"
 														th:utext="${caseType.isDisable eq true }?|<button type='button' onclick=toDisable('${caseType.id}','caseType') class='btn btn-danger'>禁用</button>|:|<button type='button' onclick=toDisable('${caseType.id}','caseType') class='btn btn-success'>启用</button>|"></td>
 													<td class="numeric"><!-- <shiro:hasPermission

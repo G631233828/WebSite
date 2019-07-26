@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import zhongchiedu.common.utils.Common;
-import zhongchiedu.general.service.Impl.MultiMediaServiceImpl;
 import zhongchiedu.log.annotation.SystemControllerLog;
 import zhongchiedu.website.pojo.Company;
 import zhongchiedu.website.service.CompanyService;
